@@ -21,18 +21,17 @@ art_accounts = ["mia_japankorea", "cezanneart", "SovietArtBot", "aic_african"]
 
 
 def retweeter():
-    l = True
-    while l:
+    while True :
         userId = random.choice(art_accounts)
-        for tweet in tweepy.Cursor(api.user_timeline, id=userId).items():
+        for tweet in tweepy.Cursor(api.user_timeline, id = userId).items():
             try:
                 if not tweet.retweeted:
                     tweet.retweet()
                     print(f"Retweeted {userId}'s tweet")
-                    # userId = random.choice(art_accounts)
+                    time.sleep(5)
                     break
 
-                    # time.sleep(5)
+                   
 
             except Exception as e:
                 print("Error!", e)
