@@ -3,32 +3,40 @@ import random
 import tweepy
 from tweepy import api
 
-API_KEY = "cA5q5WNUmtF7S5GTVGRIT9TC0"
-API_SECRET_KEY = "yKVT9sV1pvKe8MgRWiw4L3c1C0ipVp3QVkkZp9CPBhZPcDrVIT"
-ACCESS_TOKEN = "1343829111479828480-xVZF3SwW8cNrbxUPqDvO02y3QPYHKX"
-ACCESS_SECRET_TOKEN = "JqOm8wX4uEPtvQimnouok66xFEte5sjDAqUc5JLA0K5EM"
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+API_KEY = os.getenv("API_KEY")
+API_SECRET_KEY = os.getenv("API_SECRET_KEY")
+ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
+ACCESS_SECRET_TOKEN = os.getenv("ACCESS_SECRET_TOKEN")
 
 auth = tweepy.OAuthHandler(API_KEY, API_SECRET_KEY)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET_TOKEN)
 api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
-art_accounts = ["aic_african", "mia_japankorea", "cezanneart", "SovietArtBot"]
+art_accounts = ["mia_japankorea", "cezanneart", "SovietArtBot", "aic_african"]
 
 
 def retweeter():
-    userId = random.choice(art_accounts)
-    for tweet in tweepy.Cursor(api.user_timeline, id=userId).items():
-        try:
-            if not tweet.retweeted:
-                tweet.retweet()
-                print(f"Retweeted {userId}'s tweet")
-                userId = random.choice(art_accounts)
+    l = True
+    while l:
+        userId = random.choice(art_accounts)
+        for tweet in tweepy.Cursor(api.user_timeline, id=userId).items():
+            try:
+                if not tweet.retweeted:
+                    tweet.retweet()
+                    print(f"Retweeted {userId}'s tweet")
+                    # userId = random.choice(art_accounts)
+                    break
 
-            time.sleep(5)
+                    # time.sleep(5)
 
-        except Exception as e:
-            print("Error!", e)
-            pass
+            except Exception as e:
+                print("Error!", e)
+                pass
 
 
 def follower():
