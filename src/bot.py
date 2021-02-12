@@ -21,30 +21,28 @@ art_accounts = ["mia_japankorea", "cezanneart", "SovietArtBot", "aic_african"]
 
 
 def retweeter():
-    while True :
+    while True:
         userId = random.choice(art_accounts)
-        for tweet in tweepy.Cursor(api.user_timeline, id = userId).items():
+        for tweet in tweepy.Cursor(api.user_timeline, id=userId).items():
             try:
                 if not tweet.retweeted:
                     tweet.retweet()
                     print(f"Retweeted {userId}'s tweet")
                     time.sleep(5)
-                    break
-
-                   
-
+                    break                   
+                    
             except Exception as e:
                 print("Error!", e)
                 pass
 
 
 def follower():
-    print("retrieving and following follwers...")
+    print("retrieving and following followers...")
     for follower in tweepy.Cursor(api.followers).items():
         try:
             if not follower.following:
                 api.create_friendship(follower.id)
-                print(f"{follower.screen_name} was follwed back!")
+                print(f"{follower.screen_name} was followed back!")
         except Exception as e:
             print("error occured", e)
             pass
